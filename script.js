@@ -30,12 +30,18 @@ const newGame = function () {
     const box = e.target;
     const id = +box.dataset.id;
 
-    // 2. That box is disabled and value is changed
+    // 2.
+    // a.That box is disabled and value is changed
     // odd "X"
     //  even "O"
-    box.textContent = turn % 2 == 0 ? "O" : "X";
+    const mark = turn % 2 == 0 ? "O" : "X";
     turn++;
+    box.textContent = mark;
     box.disabled = true;
+
+    //b. store it in the array
+    gameBoard[id] = mark;
+    console.log(gameBoard);
   }
 
   // 3. if total clicked box is less than 5, go to step 1 (toogle player)
