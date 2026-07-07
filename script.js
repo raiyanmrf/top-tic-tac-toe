@@ -59,17 +59,51 @@ const newGame = function () {
     const clickedBoxCount = countClickedBox();
 
     if (clickedBoxCount < 5) return;
-    else console.log("the next step");
-  }
 
-  // 5.  a.  1,2,3 is "X" or "O"? if "X" go to step 6, if "O" step 7
-  //     or, 4,5,6 is "X" or "O"? if "X" go to step 6, if "O" step 7
-  //     or, 7,8,9 is "X" or "O"? if "X" go to step 6, if "O" step 7
-  //     or, 1,5,9 is "X" or "O"? if "X" go to step 6, if "O" step 7
-  //     or, 3,5,7 is "X" or "O"? if "X" go to step 6, if "O" step 7
-  //     b. if neither "X" or "O":
-  //     c. if all boxes are clicked go to step 8.
-  //     d. else go to step 1.
+    // 5.
+
+    function hasMatch(a, b, c) {
+      if (!gameBoard[a]) return false; // empty
+      if (!gameBoard[b]) return false; // empty
+      if (!gameBoard[c]) return false; // empty
+      return gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c];
+    }
+
+    function getMatch() {
+      const possibleMatches = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
+      ];
+
+      // a.  1,2,3 is "X" or "O"?
+      //     or, 4,5,6 is "X" or "O"?
+      //     or, 7,8,9 is "X" or "O"?
+      //     or, 1,5,9 is "X" or "O"?
+      //     or, 3,5,7 is "X" or "O"?
+
+      for (const pattern of possibleMatches) {
+        if (hasMatch(...pattern)) return pattern;
+      }
+
+      return false;
+    }
+
+    const match = getMatch();
+
+    console.log(match);
+
+    //     b. if neither "X" or "O":
+    //     c. if all boxes are clicked go to step 8.
+    //     d. else go to step 1.
+
+    if (!match) return; //
+  }
 
   // 6.  Player1 wins, go to step 9
   // 7.  Player2 wins, go to step 9
