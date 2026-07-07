@@ -42,10 +42,25 @@ const newGame = function () {
     //b. store it in the array
     gameBoard[id] = mark;
     console.log(gameBoard);
-  }
 
-  // 3. if total clicked box is less than 5, go to step 1 (toogle player)
-  // 4. sort all "X" and all "O" (ascending order by their index wise)
+    // 3.
+
+    //  a. count the number of boxes that are clicked
+    function countClickedBox() {
+      let count = gameBoard.reduce((sum, element) => {
+        sum += element ? 1 : 0;
+        return sum;
+      }, 0);
+
+      return count;
+    }
+
+    //4. if total clicked box is less than 5, do nothigh
+    const clickedBoxCount = countClickedBox();
+
+    if (clickedBoxCount < 5) return;
+    else console.log("the next step");
+  }
 
   // 5.  a.  1,2,3 is "X" or "O"? if "X" go to step 6, if "O" step 7
   //     or, 4,5,6 is "X" or "O"? if "X" go to step 6, if "O" step 7
