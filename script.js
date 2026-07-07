@@ -34,6 +34,8 @@ const newGame = function () {
     // odd "X"
     //  even "O"
     box.textContent = turn % 2 == 0 ? "O" : "X";
+    turn++;
+    box.disabled = true;
   }
 
   // 3. if total clicked box is less than 5, go to step 1 (toogle player)
