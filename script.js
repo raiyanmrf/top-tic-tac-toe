@@ -21,18 +21,21 @@ const newGame = function () {
   // gameboard = array with length 10, we won't use first index zero which is 0 for simplicity
   const gameBoard = new Array(10);
   // add event listener to the boxes of the gameboard
-  document.querySelector("section").addEventListener("click", (e) => {
+  document.querySelector("section").addEventListener("click", handleClickEvent);
+
+  function handleClickEvent(e) {
     e.stopPropagation();
-    if (e.target.tagName !== "DIV") return;
+    if (e.target.tagName !== "BUTTON") return;
+    // 1. Player1 click to a box and assign 'X' to it | Player2 click to a box and assign "O"
     const box = e.target;
-    const id = box.dataset.id;
+    const id = +box.dataset.id;
 
-    console.log(id);
-  });
+    // 2. That box is disabled and value is changed
+    // odd "X"
+    //  even "O"
+    box.textContent = turn % 2 == 0 ? "O" : "X";
+  }
 
-  // 1. Player1 click to a box and assign 'X' to it | Player2 click to a box and assign "O"
-
-  // 2. That box is disabled and value is changed
   // 3. if total clicked box is less than 5, go to step 1 (toogle player)
   // 4. sort all "X" and all "O" (ascending order by their index wise)
 
