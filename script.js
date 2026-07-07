@@ -94,7 +94,7 @@ const newGame = function () {
       return false;
     }
 
-    const match = getMatch();
+    const match = getMatch(); // return an patter array e.g. [1,2,3]
 
     console.log(match);
 
@@ -102,12 +102,21 @@ const newGame = function () {
     //     c. if all boxes are clicked go to step 8.
     //     d. else go to step 1.
 
-    if (!match) return; //
+    if (!match && clickedBoxCount < 9) return; //
+
+    // 8.  It's a tie
+    // 6.  Player1 wins, go to step 9
+    // 7.  Player2 wins, go to step 9
+
+    if (!match) {
+      console.log("IT'S A TIE.");
+      return;
+    }
+
+    // return the winning mark "X" or "O"
+    console.log(gameBoard[match[0]]);
   }
 
-  // 6.  Player1 wins, go to step 9
-  // 7.  Player2 wins, go to step 9
-  // 8.  It's a tie
   // 9.  Show result
   // 10. End
 };
