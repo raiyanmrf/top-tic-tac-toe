@@ -1,13 +1,16 @@
-// 0. Start -> INPUT players name and assign their tags
-
-// IIFE
+// 0. Start -> INPUT players name, and render
 
 const newGame = function () {
   const player1 = prompt(`Enter Player 1 name: `);
   if (!player1) return;
   const player2 = prompt(`Enter Player 2 name: `);
   if (!player2) return;
+
+  document.querySelector("#player1").textContent = player1;
+  document.querySelector("#player2").textContent = player2;
 };
+
+// newGame();
 
 // 1. Player1 click to a box and assign 'X' to it | Player2 click to a box and assign "O"
 // 2. That box is disabled and value is changed
