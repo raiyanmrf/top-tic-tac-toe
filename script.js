@@ -1,16 +1,22 @@
 // 0. Start ->
 // a. INPUT players name, and render
 
-const newGame = function () {
-  // const player1 = prompt(`Enter Player 1 name: `);
-  const player1 = "none";
-  if (!player1) return;
-  // const player2 = prompt(`Enter Player 2 name: `);
-  const player2 = "none";
-  if (!player2) return;
+const player = function (playerNo) {
+  // const input = prompt(`Enter Player ${playerNo} name: `);
+  const input = false;
+  const buttonId = `#player${playerNo}`;
 
-  document.querySelector("#player1").textContent = player1;
-  document.querySelector("#player2").textContent = player2;
+  const player = !input ? `Player ${playerNo}` : input;
+  const mark = playerNo == 1 ? "X" : "O";
+
+  document.querySelector(buttonId).textContent = player;
+
+  return { name: player, mark };
+};
+
+const newGame = function () {
+  const player1 = player(1);
+  const player2 = player(2);
 
   // b.
   // total turn count = 9;
@@ -34,13 +40,13 @@ const newGame = function () {
     // a.That box is disabled and value is changed
     // odd "X"
     //  even "O"
-    const mark = turn % 2 == 0 ? "O" : "X";
+    const currentMark = turn % 2 !== 0 ? player1.mark : player2.mark;
     turn++;
-    box.textContent = mark;
+    box.textContent = currentMark;
     box.disabled = true;
 
     //b. store it in the array
-    gameBoard[id] = mark;
+    gameBoard[id] = currentMark;
     console.log(gameBoard);
 
     // 3.
