@@ -14,20 +14,95 @@ const player = function (playerNo) {
   return { name: player, mark };
 };
 
+const createGameBoard = function () {
+  const store = new Array(10);
+  const displayBoxContainer = document.querySelector("section");
+  let currentMark = "X";
+
+  function getCurrentMark() {
+    return currentMark;
+  }
+  function setCurrentMark() {
+    if (currentMark === "X") {
+      currentMark = "O";
+    } else currentMark = "X";
+  }
+  function countClickedBox() {
+    let count = store.reduce((sum, element) => {
+      sum += element ? 1 : 0;
+      return sum;
+    }, 0);
+
+    return count;
+  }
+
+  function hasMatch(a, b, c) {
+    if (!store[a]) return false; // empty
+    if (!store[b]) return false; // empty
+    if (!store[c]) return false; // empty
+    return store[a] === store[b] && store[b] === store[c];
+  }
+
+  function getMatch() {
+    const possibleMatches = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      [1, 4, 7],
+      [2, 5, 8],
+      [3, 6, 9],
+      [1, 5, 9],
+      [3, 5, 7],
+    ];
+
+    // a.  1,2,3 is "X" or "O"?
+    //     or, 4,5,6 is "X" or "O"?
+    //     or, 7,8,9 is "X" or "O"?
+    //     or, 1,5,9 is "X" or "O"?
+    //     or, 3,5,7 is "X" or "O"?
+
+    for (const pattern of possibleMatches) {
+      if (hasMatch(...pattern)) return pattern;
+    }
+
+    return false;
+  }
+
+  function storeInGameBoard(id, currentMark) {
+    store[id] = currentMark;
+    console.log(store);
+  }
+
+  function changeAndDisableBox(box, currentMark) {
+    box.textContent = currentMark;
+    box.disabled = true;
+  }
+
+  function addEvent(callback) {
+    displayBoxContainer.addEventListener("click", callback);
+  }
+
+  function getWinningMark(match) {
+    console.log(store[match[0]]);
+  }
+
+  return {
+    countClickedBox,
+    changeAndDisableBox,
+    getMatch,
+    storeInGameBoard,
+    getWinningMark,
+    addEvent,
+    getCurrentMark,
+    setCurrentMark,
+  };
+};
+
 const newGame = function () {
   const player1 = player(1);
   const player2 = player(2);
-
-  // b.
-  // total turn count = 9;
-  // odd for player 1;
-  //  even for player 2;
-
-  let turn = 1;
-  // gameboard = array with length 10, we won't use first index zero which is 0 for simplicity
-  const gameBoard = new Array(10);
-  // add event listener to the boxes of the gameboard
-  document.querySelector("section").addEventListener("click", handleClickEvent);
+  const gameBoard = createGameBoard();
+  gameBoard.addEvent(handleClickEvent);
 
   function handleClickEvent(e) {
     e.stopPropagation();
@@ -40,67 +115,25 @@ const newGame = function () {
     // a.That box is disabled and value is changed
     // odd "X"
     //  even "O"
-    const currentMark = turn % 2 !== 0 ? player1.mark : player2.mark;
-    turn++;
-    box.textContent = currentMark;
-    box.disabled = true;
+    const currentMark = gameBoard.getCurrentMark();
+    gameBoard.setCurrentMark();
+    gameBoard.changeAndDisableBox(box, currentMark);
 
     //b. store it in the array
-    gameBoard[id] = currentMark;
-    console.log(gameBoard);
+    gameBoard.storeInGameBoard(id, currentMark);
 
     // 3.
 
     //  a. count the number of boxes that are clicked
-    function countClickedBox() {
-      let count = gameBoard.reduce((sum, element) => {
-        sum += element ? 1 : 0;
-        return sum;
-      }, 0);
-
-      return count;
-    }
 
     //4. if total clicked box is less than 5, do nothigh
-    const clickedBoxCount = countClickedBox();
+    const clickedBoxCount = gameBoard.countClickedBox();
 
     if (clickedBoxCount < 5) return;
 
     // 5.
 
-    function hasMatch(a, b, c) {
-      if (!gameBoard[a]) return false; // empty
-      if (!gameBoard[b]) return false; // empty
-      if (!gameBoard[c]) return false; // empty
-      return gameBoard[a] === gameBoard[b] && gameBoard[b] === gameBoard[c];
-    }
-
-    function getMatch() {
-      const possibleMatches = [
-        [1, 2, 3],
-        [4, 5, 6],
-        [7, 8, 9],
-        [1, 4, 7],
-        [2, 5, 8],
-        [3, 6, 9],
-        [1, 5, 9],
-        [3, 5, 7],
-      ];
-
-      // a.  1,2,3 is "X" or "O"?
-      //     or, 4,5,6 is "X" or "O"?
-      //     or, 7,8,9 is "X" or "O"?
-      //     or, 1,5,9 is "X" or "O"?
-      //     or, 3,5,7 is "X" or "O"?
-
-      for (const pattern of possibleMatches) {
-        if (hasMatch(...pattern)) return pattern;
-      }
-
-      return false;
-    }
-
-    const match = getMatch(); // return an patter array e.g. [1,2,3]
+    const match = gameBoard.getMatch(); // return an patter array e.g. [1,2,3]
 
     console.log(match);
 
@@ -120,7 +153,7 @@ const newGame = function () {
     }
 
     // return the winning mark "X" or "O"
-    console.log(gameBoard[match[0]]);
+    // console.log(gameBoard[match[0]]);
   }
 
   // 9.  Show result
