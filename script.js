@@ -6,21 +6,51 @@ const ticTacToe = function () {
 };
 
 const startGame = function (player1, player2, gameBoard) {
-  const store = gameBoard.store;
   let currentMark = "X";
 
-  gameBoard.displayBoxContainer.addEventListener("click", handleClickEvent);
+  gameBoard.addEvent(handleClickEvent);
 
-  function getCurrentMark() {
-    return currentMark;
-  }
   function setCurrentMark() {
     if (currentMark === "X") {
       currentMark = "O";
     } else currentMark = "X";
   }
+
+  function handleClickEvent(e) {
+    e.stopPropagation();
+    if (e.target.tagName !== "BUTTON") return;
+    const box = e.target;
+    const id = +box.dataset.id;
+    setCurrentMark();
+    gameBoard.assignMarkToThisBox(box, currentMark);
+    gameBoard.disableThisBox(box);
+    gameBoard.storeInMemory(id, currentMark);
+    const clickedBoxCount = gameBoard.countClickedBox();
+
+    if (clickedBoxCount < 5) return;
+    const match = gameBoard.getMatch(); // return an patter array e.g. [1,2,3]
+
+    console.log(match);
+    if (!match && clickedBoxCount < 9) return; //
+
+    if (!match) {
+      console.log("IT'S A TIE.");
+      return;
+    }
+
+    gameBoard.getWinningMark(match);
+  }
+};
+const createGameBoard = function () {
+  const memory = new Array(10); // to track clicked box and its value
+  const container = document.querySelector("section"); // gameboard container
+
+  function addEvent(callback) {
+    container.addEventListener("click", callback);
+  }
+
   function countClickedBox() {
-    let count = store.reduce((sum, element) => {
+    let count = memory.reduce((sum, element) => {
       sum += element ? 1 : 0;
       return sum;
     }, 0);
@@ -29,10 +59,10 @@ const startGame = function (player1, player2, gameBoard) {
   }
 
   function hasMatch(a, b, c) {
-    if (!store[a]) return false; // empty
-    if (!store[b]) return false; // empty
-    if (!store[c]) return false; // empty
-    return store[a] === store[b] && store[b] === store[c];
+    if (!memory[a]) return false; // empty
+    if (!memory[b]) return false; // empty
+    if (!memory[c]) return false; // empty
+    return memory[a] === memory[b] && memory[b] === memory[c];
   }
 
   function getMatch() {
@@ -54,58 +84,32 @@ const startGame = function (player1, player2, gameBoard) {
     return false;
   }
 
-  function storeInGameBoard(id) {
-    store[id] = currentMark;
-    console.log(store);
+  function storeInMemory(id, currentMark) {
+    memory[id] = currentMark;
+    console.log(memory);
   }
 
-  function changeAndDisableBox(box) {
+  function assignMarkToThisBox(box, currentMark) {
     box.textContent = currentMark;
+  }
+  function disableThisBox(box) {
     box.disabled = true;
   }
 
   function getWinningMark(match) {
-    console.log(store[match[0]]);
-  }
-
-  function handleClickEvent(e) {
-    e.stopPropagation();
-    if (e.target.tagName !== "BUTTON") return;
-    const box = e.target;
-    const id = +box.dataset.id;
-    setCurrentMark();
-    changeAndDisableBox(box);
-    storeInGameBoard(id);
-    const clickedBoxCount = countClickedBox();
-
-    if (clickedBoxCount < 5) return;
-    const match = getMatch(); // return an patter array e.g. [1,2,3]
-
-    console.log(match);
-    if (!match && clickedBoxCount < 9) return; //
-
-    if (!match) {
-      console.log("IT'S A TIE.");
-      return;
-    }
-
-    getWinningMark();
+    console.log(memory[match[0]]);
   }
 
   return {
+    memory,
+    addEvent,
     countClickedBox,
-    changeAndDisableBox,
+    storeInMemory,
+    assignMarkToThisBox,
+    disableThisBox,
     getMatch,
-    storeInGameBoard,
     getWinningMark,
-    getCurrentMark,
-    setCurrentMark,
   };
-};
-const createGameBoard = function () {
-  const store = new Array(10);
-  const displayBoxContainer = document.querySelector("section");
-  return { store, displayBoxContainer };
 };
 const createPlayer = function (playerNo) {
   // const input = prompt(`Enter Player ${playerNo} name: `);
