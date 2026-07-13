@@ -63,3 +63,8 @@ section {
 .hidden {
   display: none;
 }
+
+h4 {
+  display: flex;
+  gap: 3px;
+}
