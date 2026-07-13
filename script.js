@@ -7,12 +7,13 @@
   };
 
   const startGame = function (player1, player2, gameBoard) {
+    // INITIAL STATE
     let currentMark = player1.mark;
     let currentPlayer = player1.name;
     let msg = `${currentPlayer}'s turn. Put a "${currentMark}"`;
-
     setNotice(msg); // initial message
-    toogleButtons(); // hide start button , show reload button
+    toogleButtons();
+
     gameBoard.addEvent(handleClickEvent);
 
     function setNotice(msg) {
@@ -33,8 +34,8 @@
     }
 
     function toogleButtons() {
-      document.getElementById("start").classList.toggle("hidden");
-      document.getElementById("reset").classList.toggle("hidden");
+      document.getElementById("start").classList.add("hidden");
+      document.getElementById("restart").classList.remove("hidden");
     }
     function handleClickEvent(e) {
       e.stopPropagation();
@@ -44,30 +45,27 @@
       const id = +box.dataset.id;
 
       gameBoard.assignMarkToThisBox(box, currentMark);
-      gameBoard.disableThisBox(box);
       gameBoard.storeInMemory(id, currentMark);
 
       const clickedBoxCount = gameBoard.countClickedBox();
 
       const match = gameBoard.getMatch(); // return an patter array e.g. [1,2,3]
 
-      console.log(match);
+      // console.log(match);
 
       if (match) {
         setNotice(`${currentPlayer} won ! ${currentMark} rocks !`);
-        gameBoard.disableAllBox();
       } else if (!match && clickedBoxCount < 9) {
         setCurrentState();
       } else {
         setNotice("It's a tie.");
-        gameBoard.disableAllBox();
       }
     }
   };
   const createGameBoard = function () {
     let memory = new Array(10); // to track clicked box and its value
     const container = document.querySelector("section"); // gameboard container
-    enableAllBox();
+    resetBoxes();
 
     function addEvent(callback) {
       container.addEventListener("click", callback);
@@ -112,24 +110,17 @@
       let arr = memory.slice();
       arr[id] = currentMark;
       memory = arr;
-      console.log(memory);
+      console.table(memory);
     }
 
     function assignMarkToThisBox(box, currentMark) {
-      box.textContent = currentMark;
-    }
-    function disableThisBox(box) {
-      box.disabled = true;
+      const text = box.textContent;
+      if (text != "X" || text != "O") box.textContent = currentMark;
+      return;
     }
 
-    function disableAllBox() {
+    function resetBoxes() {
       container.childNodes.forEach((box) => {
-        box.disabled = true;
-      });
-    }
-    function enableAllBox() {
-      container.childNodes.forEach((box) => {
-        box.disabled = false;
         box.textContent = "";
       });
     }
@@ -139,9 +130,7 @@
       countClickedBox,
       storeInMemory,
       assignMarkToThisBox,
-      disableThisBox,
       getMatch,
-      disableAllBox,
     };
   };
   const createPlayer = function (playerNo) {
@@ -160,7 +149,5 @@
   };
 
   document.getElementById("start").addEventListener("click", ticTacToe);
-  document.getElementById("reset").addEventListener("click", () => {
-    location.reload();
-  });
+  document.getElementById("restart").addEventListener("click", ticTacToe);
 })();
