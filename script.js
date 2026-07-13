@@ -9,10 +9,13 @@ const startGame = function (player1, player2, gameBoard) {
   let currentMark = player1.mark;
   let currentPlayer = player1.name;
   let msg = `${currentPlayer}'s turn. Put a ${currentMark}`;
-  let noticeBox = document.querySelector(".notice");
 
-  noticeBox.textContent = msg;
+  setNotice(msg);
   gameBoard.addEvent(handleClickEvent);
+
+  function setNotice(msg) {
+    document.querySelector(".notice").textContent = msg;
+  }
 
   function setCurrentState() {
     if (currentMark === "O") {
@@ -24,7 +27,7 @@ const startGame = function (player1, player2, gameBoard) {
     }
 
     msg = `${currentPlayer}'s turn. Put a "${currentMark}"`;
-    noticeBox.textContent = msg;
+    setNotice(msg);
   }
 
   function handleClickEvent(e) {
@@ -45,12 +48,13 @@ const startGame = function (player1, player2, gameBoard) {
     console.log(match);
 
     if (match) {
-      noticeBox.textContent = `${currentPlayer} is the winner ! ${currentMark} rocks !`;
+      setNotice(`${currentPlayer} is the winner ! ${currentMark} rocks !`);
+      gameBoard.disableAllBox();
     } else if (!match && clickedBoxCount < 9) {
       setCurrentState();
     } else {
-      console.log("IT'S A TIE.");
-      return;
+      setNotice("It's a tie.");
+      gameBoard.disableAllBox();
     }
   }
 };
@@ -109,6 +113,12 @@ const createGameBoard = function () {
     box.disabled = true;
   }
 
+  function disableAllBox() {
+    container.childNodes.forEach((box) => {
+      box.disabled = true;
+    });
+  }
+
   return {
     memory,
     addEvent,
@@ -117,6 +127,7 @@ const createGameBoard = function () {
     assignMarkToThisBox,
     disableThisBox,
     getMatch,
+    disableAllBox,
   };
 };
 const createPlayer = function (playerNo) {
