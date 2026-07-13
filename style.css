@@ -59,3 +59,7 @@ section {
   border-inline-end: none;
   border-block-end: none;
 }
+
+.hidden {
+  display: none;
+}
