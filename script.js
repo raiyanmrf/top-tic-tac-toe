@@ -6,25 +6,38 @@ const ticTacToe = function () {
 };
 
 const startGame = function (player1, player2, gameBoard) {
-  let currentMark = "X";
+  let currentMark = player1.mark;
+  let currentPlayer = player1.name;
+  let msg = `${currentPlayer}'s turn. Put a ${currentMark}`;
+  let noticeBox = document.querySelector(".notice");
 
+  noticeBox.textContent = msg;
   gameBoard.addEvent(handleClickEvent);
 
-  function setCurrentMark() {
-    if (currentMark === "X") {
+  function setCurrentState() {
+    if (currentMark === "O") {
+      currentMark = "X";
+      currentPlayer = player1.name;
+    } else {
       currentMark = "O";
-    } else currentMark = "X";
+      currentPlayer = player2.name;
+    }
+
+    msg = `${currentPlayer}'s turn. Put a "${currentMark}"`;
+    noticeBox.textContent = msg;
   }
 
   function handleClickEvent(e) {
     e.stopPropagation();
+
     if (e.target.tagName !== "BUTTON") return;
     const box = e.target;
     const id = +box.dataset.id;
-    setCurrentMark();
+
     gameBoard.assignMarkToThisBox(box, currentMark);
     gameBoard.disableThisBox(box);
     gameBoard.storeInMemory(id, currentMark);
+    setCurrentState();
     const clickedBoxCount = gameBoard.countClickedBox();
 
     if (clickedBoxCount < 5) return;
