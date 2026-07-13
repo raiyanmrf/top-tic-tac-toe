@@ -109,7 +109,9 @@
     }
 
     function storeInMemory(id, currentMark) {
-      memory[id] = currentMark;
+      let arr = memory.slice();
+      arr[id] = currentMark;
+      memory = arr;
       console.log(memory);
     }
 
@@ -130,12 +132,9 @@
         box.disabled = false;
         box.textContent = "";
       });
-
-      memory = new Array(10);
     }
 
     return {
-      memory,
       addEvent,
       countClickedBox,
       storeInMemory,
