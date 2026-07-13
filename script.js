@@ -54,7 +54,7 @@
       console.log(match);
 
       if (match) {
-        setNotice(`${currentPlayer} is the winner ! ${currentMark} rocks !`);
+        setNotice(`${currentPlayer} won ! ${currentMark} rocks !`);
         gameBoard.disableAllBox();
       } else if (!match && clickedBoxCount < 9) {
         setCurrentState();
@@ -146,8 +146,11 @@
     };
   };
   const createPlayer = function (playerNo) {
-    // const input = prompt(`Enter Player ${playerNo} name: `);
-    const input = false;
+    const input = prompt(
+      `Enter Player ${playerNo} name: `,
+      `Player ${playerNo}`,
+    );
+    // const input = false;
     const buttonId = `#player${playerNo}`;
 
     const player = !input ? `Player ${playerNo}` : input;
