@@ -37,21 +37,21 @@ const startGame = function (player1, player2, gameBoard) {
     gameBoard.assignMarkToThisBox(box, currentMark);
     gameBoard.disableThisBox(box);
     gameBoard.storeInMemory(id, currentMark);
-    setCurrentState();
+
     const clickedBoxCount = gameBoard.countClickedBox();
 
-    if (clickedBoxCount < 5) return;
     const match = gameBoard.getMatch(); // return an patter array e.g. [1,2,3]
 
     console.log(match);
-    if (!match && clickedBoxCount < 9) return; //
 
-    if (!match) {
+    if (match) {
+      noticeBox.textContent = `${currentPlayer} is the winner ! ${currentMark} rocks !`;
+    } else if (!match && clickedBoxCount < 9) {
+      setCurrentState();
+    } else {
       console.log("IT'S A TIE.");
       return;
     }
-
-    gameBoard.getWinningMark(match);
   }
 };
 const createGameBoard = function () {
@@ -109,10 +109,6 @@ const createGameBoard = function () {
     box.disabled = true;
   }
 
-  function getWinningMark(match) {
-    console.log(memory[match[0]]);
-  }
-
   return {
     memory,
     addEvent,
@@ -121,7 +117,6 @@ const createGameBoard = function () {
     assignMarkToThisBox,
     disableThisBox,
     getMatch,
-    getWinningMark,
   };
 };
 const createPlayer = function (playerNo) {
