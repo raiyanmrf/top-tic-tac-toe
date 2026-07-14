@@ -67,5 +67,6 @@ section {
 
 h4 {
   display: flex;
-  gap: 3px;
+  gap: 10px;
+  color: gray;
 }

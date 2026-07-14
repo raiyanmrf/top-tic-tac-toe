@@ -10,7 +10,7 @@
     // INITIAL STATE
     let currentMark = player1.mark;
     let currentPlayer = player1.name;
-    let msg = `${currentPlayer}'s turn. Put a "${currentMark}"`;
+    let msg = `${currentPlayer}'s turn. Put a "${currentMark}".`;
     setNotice(msg); // initial message
     toogleButtons();
 
