@@ -11,8 +11,19 @@ body {
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
+  display: grid;
+  place-items: center;
+  background-color: gray;
 }
-
+.card {
+  background-color: white;
+  padding: 30px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 section {
   display: grid;
   grid-template-columns: repeat(3, 80px);
@@ -80,6 +91,11 @@ h4 {
   position: relative;
   bottom: 2px;
   margin-inline-start: 5px;
+}
+
+#start:hover,
+#restart:hover {
+  transform: scale(1.1);
 }
 
 button {
