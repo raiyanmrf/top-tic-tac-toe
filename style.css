@@ -70,3 +70,18 @@ h4 {
   gap: 10px;
   color: gray;
 }
+
+#start,
+#restart {
+  background-color: lightgreen;
+  color: darkgreen;
+  border: none;
+  font-size: 1.6rem;
+  position: relative;
+  bottom: 2px;
+  margin-inline-start: 5px;
+}
+
+button {
+  cursor: pointer;
+}
