@@ -56,6 +56,7 @@
       if (match) {
         setNotice(`${currentPlayer} won ! ${currentMark} rocks !`);
         gameBoard.removeEvent(handleClickEvent);
+        gameBoard.colorBoxes(match);
       } else if (!match && clickedBoxCount < 9) {
         setCurrentState();
       } else {
@@ -129,6 +130,13 @@
         box.style["color"] = "gray";
       });
     }
+    function colorBoxes(match) {
+      match.forEach(
+        (item) =>
+          (document.querySelector(`.box:nth-child(${item})`).style.color =
+            "green"),
+      );
+    }
 
     return {
       addEvent,
@@ -137,6 +145,7 @@
       storeInMemory,
       assignMarkToThisBox,
       getMatch,
+      colorBoxes,
     };
   };
   const createPlayer = function (playerNo) {
