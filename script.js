@@ -124,8 +124,9 @@
     }
 
     function resetBoxes() {
-      container.childNodes.forEach((box) => {
+      Array.from(container.children).forEach((box) => {
         box.textContent = "";
+        box.style["color"] = "gray";
       });
     }
 
