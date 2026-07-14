@@ -115,7 +115,7 @@
       let arr = memory.slice();
       arr[id] = currentMark;
       memory = arr;
-      console.table(memory);
+      // console.table(memory);
     }
 
     function assignMarkToThisBox(box, currentMark) {
