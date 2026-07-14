@@ -55,6 +55,7 @@
 
       if (match) {
         setNotice(`${currentPlayer} won ! ${currentMark} rocks !`);
+        gameBoard.removeEvent(handleClickEvent);
       } else if (!match && clickedBoxCount < 9) {
         setCurrentState();
       } else {
@@ -69,6 +70,9 @@
 
     function addEvent(callback) {
       container.addEventListener("click", callback);
+    }
+    function removeEvent(callback) {
+      container.removeEventListener("click", callback);
     }
 
     function countClickedBox() {
@@ -127,6 +131,7 @@
 
     return {
       addEvent,
+      removeEvent,
       countClickedBox,
       storeInMemory,
       assignMarkToThisBox,
